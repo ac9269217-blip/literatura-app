@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Literatura App</title>
+
+<link rel="manifest" href="manifest.json">
+
+<style>
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  background: #000;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.header {
+  font-size: 20px;
+  margin-bottom: 10px;
+  opacity: 0.8;
+}
+
+.card {
+  width: 90%;
+  max-width: 500px;
+  height: 300px;
+  background: #1c1c1e;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+  font-size: 18px;
+  transition: transform 0.2s;
+}
+
+.card:active {
+  transform: scale(0.98);
+}
+
+.buttons {
+  margin-top: 20px;
+}
+
+button {
+  background: #0a84ff;
+  border: none;
+  padding: 12px 18px;
+  border-radius: 12px;
+  color: white;
+  margin: 5px;
+  font-size: 16px;
+}
+
+button:active {
+  opacity: 0.7;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">📚 Literatura Flashcards</div>
+
+<div class="card" id="card" onclick="flip()"></div>
+
+<div class="buttons">
+  <button onclick="prev()">⬅</button>
+  <button onclick="next()">➡</button>
+  <button onclick="shuffle()">🔀</button>
+</div>
+
+<script>
+const cards = [
+{f:"El Conde Lucanor", b:"Edad Media | Don Juan Manuel | Joven domina esposa brava"},
+{f:"Romance del rey moro que perdió Alhama", b:"Anónimo | Rey lamenta pérdida de Alhama"},
+{f:"Visión de los vencidos", b:"Miguel León-Portilla | Presagios antes de la conquista"},
+{f:"Lazarillo de Tormes", b:"Anónimo | Niño huérfano sobrevive con amos"},
+{f:"Don Quijote", b:"Cervantes | Locura y parodia de caballería"},
+{f:"La casa de Bernarda Alba", b:"Lorca | Control y represión familiar"},
+{f:"Borges y yo", b:"Borges | Dualidad del yo escritor"},
+{f:"Rima LIII", b:"Bécquer | Amor perdido"},
+{f:"Hombres necios", b:"Sor Juana | Crítica al machismo"},
+{f:"Balada de los dos abuelos", b:"Nicolás Guillén | Mestizaje cultural"}
+];
+
+let i = 0;
+let flipped = false;
+
+function render(){
+  document.getElementById("card").innerText =
+    flipped ? cards[i].b : cards[i].f;
+}
+
+function flip(){
+  flipped = !flipped;
+  render();
+}
+
+function next(){
+  i = (i+1) % cards.length;
+  flipped = false;
+  render();
+}
+
+function prev(){
+  i = (i-1+cards.length) % cards.length;
+  flipped = false;
+  render();
+}
+
+function shuffle(){
+  i = Math.floor(Math.random()*cards.length);
+  flipped = false;
+  render();
+}
+
+render();
+</script>
+
+<script>
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("sw.js");
+}
+</script>
+
+</body>
+</html>
